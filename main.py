@@ -1,3 +1,4 @@
+from aifc import Error
 import os, re, webbrowser, time
 from colorama import Fore, init, Back
 # importing libs
@@ -6,13 +7,11 @@ from colorama import Fore, init, Back
 def commands():
     terminal_commands = ["sudo apt update",
                     "sudo apt install build-essential git dkms",
-                    "git clone https://github.com/brektrou/rtl8821CU.git",
-                    "cd rtl8821CU",
                     "chmod +x dkms-install.sh",
                     "sudo ./dkms-install.sh",
-                    "sudo modprobe 8821cu]"
+                    "sudo modprobe 8821cu"
                     ]
-    os.chdir("/home")
+
     for command in terminal_commands:
         os.system(command)
 
@@ -30,10 +29,18 @@ find = re.search("git-all", item)
 print("Checking for dependencies...")
 
 if find:
-    print(Fore.GREEN + "OK")
-    print("No dependency found\n")
-    time.sleep(1)
-    commands()
+    try:
+        print(Fore.GREEN + "OK")
+        print("No dependency found\n")
+        os.system("git clone https://github.com/brektrou/rtl8821CU.git")
+        os.chdir("rtl8821CU")
+        time.sleep(1)
+        commands()
+        print(Fore.GREEN + "Drivers installed successfully")
+    except  TypeError:
+        print(f"Error: {Error}")
+        exit()
+
 else:
     # If any dependencies were found and not downloaded in the terminal, you will be directed to the website of the missing package
     print(Fore.RED + "Dependency found!")
