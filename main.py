@@ -1,4 +1,3 @@
-from aifc import Error
 import os, re, webbrowser, time
 from colorama import Fore, init, Back
 # importing libs
@@ -19,13 +18,13 @@ def commands():
 
 init(autoreset=True)
 print("D-Link DWA 171 WIFI ADAPTER AUTOMATIC DRIVER INSTALLER")
-print(Fore.RED + "Works only on Debian distros")
+print(Fore.RED + "Works only on Debian/Ubuntu distros")
 time.sleep(3)
 
 # finding some dependencies
 
-item = os.popen("apt list").read()
-find = re.search("git-all", item)
+item = os.popen("git --version").read()
+find = re.search("git", item)
 print("Checking for dependencies...")
 
 if find:
@@ -37,8 +36,8 @@ if find:
         time.sleep(1)
         commands()
         print(Fore.GREEN + "Drivers installed successfully")
-    except  TypeError:
-        print(f"Error: {Error}")
+    except (TypeError, FileNotFoundError) as e:
+        print(f"{Fore.YELLOW}Error: {e}")
         exit()
 
 else:
@@ -47,11 +46,19 @@ else:
     print("We'll download it for you!\n")
     time.sleep(1)
     download_git = os.system("sudo apt install git -y")
-    
+    time.sleep(1)
+    try:
+        os.system("git clone https://github.com/brektrou/rtl8821CU.git")
+        os.chdir("rtl8821CU")
+        time.sleep(1)
+        commands()
+        print(Fore.GREEN + "Drivers installed successfully")
+    except (TypeError, FileNotFoundError) as e:
+        print(f"{Fore.YELLOW}Error: {e}")
+        exit()
+
     if download_git == 25600:
         print("Package not found, you will be directed to the website...")
         webbrowser.open("https://git-scm.com/downloads")
         print(Fore.YELLOW + "Please restart the script")
         exit()
-    else:  
-        print(Fore.GREEN + "Drivers installed successfully")
