@@ -8,8 +8,9 @@ Funciona apenas em distro baseadas no Ubuntu/Debian <img src="https://cdn-icons-
 # Como usar:
 ``` bash
 git clone https://github.com/CarlosDev314159/d-link-dwa-171-wifi-adapter-automatic-driver-installer.git
-
+# (Instalando as dependências (Installing the dependencies)
 pip3 install -r requirements.txt 
+# Execute o script (Run the script)
 python3 main.py
 ```
 
